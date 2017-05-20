@@ -13,6 +13,9 @@ import br.com.leadws.model.Cliente;
 import br.com.leadws.model.Leads;
 import br.com.leadws.model.Lead;
 import br.com.leadws.model.Parametroslead;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,15 +71,19 @@ public class GerarLeadController {
         lead.setProdutos(parametrosLead.getProduto());
         lead.setSituacao(1);
         lead.setTipocontato(1);
-        lead.setTipoorigem(parametrosLead.getTipoorigem());
+        lead.setPais(5);
+        lead.setPublicidade(parametrosLead.getPublicidade());
         lead.setUnidadenegocio(contato.getUnidade());
         lead.setMotivocancelamento1(1);
+        lead.setDatarecebimento(new Date());
+        lead.setHorarecebimento(formatarHoraString());
         UnidadeFacade unidadeFacade = new UnidadeFacade();
         int responsavel = responsavel = unidadeFacade.getUsuarioResponsavel(lead.getUnidadenegocio());
         if (contato.getUnidade()==0){
             responsavel =6;
         }
         lead.setUsuario(responsavel);
+        lead.setIdcontrole(contato.getId());
         LeadFacade leadFacede = new LeadFacade();
         leadFacede.salvar(lead);
     }
@@ -89,7 +96,8 @@ public class GerarLeadController {
             cliente = new Cliente();
             cliente.setNome(contato.getNome());
             cliente.setEmail(contato.getEmail());
-            cliente.setFoneCelular(contato.getTelefone());
+            cliente.setDataCadastro(new Date());
+            cliente.setFoneCelular(formatTelefone(contato.getTelefone()));
             cliente.setTipoCliente("FollowUp");
             cliente.setPublicidade(parametrosLead.getPublicidade());
             if (contato.getUnidade()==0){
@@ -100,5 +108,27 @@ public class GerarLeadController {
         }
         return cliente;
     } 
+    
+    public String formatTelefone(String fone){
+        String novoFone ="";
+        int tamanho = fone.length();
+        for(int i=0;i<tamanho;i++){
+            if (fone.charAt(i)!=' '){
+                if (fone.charAt(i)=='-'){
+                    i++;
+                    novoFone = novoFone + fone.charAt(i) + "-";
+                }else {
+                    novoFone = novoFone + fone.charAt(i);
+                }
+            }
+        }
+        return novoFone;
+    }
+    
+    public String formatarHoraString() {
+	DateFormat formato = new SimpleDateFormat("HH:mm:ss");
+	String formattedDate = formato.format(new Date());
+	return formattedDate;
+    }
     
 }

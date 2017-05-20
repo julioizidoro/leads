@@ -61,14 +61,23 @@ public class Lead implements Serializable {
     private int produtos;
     @Column(name = "tipocontato_idtipocontato")
     private int tipocontato;
-    @Column(name = "tipoorigem_idtipoorigem")
-    private int tipoorigem;
     @Column(name = "unidadenegocio_idunidadeNegocio")
     private int unidadenegocio;
     @Column(name = "usuario_idusuario")
     private int usuario;
-    @JoinColumn(name = "motivocancelamento_idmotivocancelamento")
+    @Column(name = "motivocancelamento_idmotivocancelamento")
     private int motivocancelamento1;
+    @Column(name = "idcontrole")
+    private int idcontrole;
+    @Column(name = "publicidade_idpublicidade")
+    private int publicidade;
+    @Column(name = "pais_idpais")
+    private int pais;
+    @Column(name = "horarecebimento")
+    private String horarecebimento;
+    @Column(name = "datarecebimento")
+    private Date datarecebimento;
+    
 
     public Lead() {
     }
@@ -177,14 +186,6 @@ public class Lead implements Serializable {
         this.tipocontato = tipocontato;
     }
 
-    public int getTipoorigem() {
-        return tipoorigem;
-    }
-
-    public void setTipoorigem(int tipoorigem) {
-        this.tipoorigem = tipoorigem;
-    }
-
     public int getUnidadenegocio() {
         return unidadenegocio;
     }
@@ -209,7 +210,45 @@ public class Lead implements Serializable {
         this.motivocancelamento1 = motivocancelamento1;
     }
 
+    public int getIdcontrole() {
+        return idcontrole;
+    }
+
+    public void setIdcontrole(int idcontrole) {
+        this.idcontrole = idcontrole;
+    }
+
+    public int getPublicidade() {
+        return publicidade;
+    }
+
+    public void setPublicidade(int publicidade) {
+        this.publicidade = publicidade;
+    }
+
+    public int getPais() {
+        return pais;
+    }
+
+    public void setPais(int pais) {
+        this.pais = pais;
+    }
+
+    public Date getDatarecebimento() {
+        return datarecebimento;
+    }
+
+    public void setDatarecebimento(Date datarecebimento) {
+        this.datarecebimento = datarecebimento;
+    }
+
+    public void setHorarecebimento(String horarecebimento){
+        this.horarecebimento = horarecebimento;
+    }
     
+    public String getHorarecebimento(){
+        return this.horarecebimento;
+    } 
 
     @Override
     public int hashCode() {

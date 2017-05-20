@@ -41,7 +41,7 @@ public class ContatoDao {
 //    }   
     public List<Leads> list(int idContato) throws SQLException {
         EntityManager manager = ConexaoSingleton.getInstanceLead();
-        Query q = manager.createQuery("select c from Leads c where c.id>" + idContato);
+        Query q = manager.createQuery("select c from Leads c where c.id>" + idContato + " and c.unidade=2");
         if (q.getResultList().size() > 0) {
             return q.getResultList();
         }

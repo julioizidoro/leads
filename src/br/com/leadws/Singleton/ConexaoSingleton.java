@@ -31,9 +31,9 @@ public class ConexaoSingleton {
     public static EntityManager getInstanceSysTM() {
         if (emfSysTM == null) {
             Map mapa = new HashMap();
-            mapa.put("hibernate.connection.url", "jdbc:mysql://192.168.1.150:8082/systm");
+            mapa.put("hibernate.connection.url", "jdbc:mysql://192.168.1.100:8081/systm");
             mapa.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-            mapa.put("hibernate.connection.password", "jfhmaster123");
+            mapa.put("hibernate.connection.password", "simples");
             mapa.put("hibernate.connection.username", "root");
             mapa.put("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider");
             mapa.put("hibernate.show_sql", "true");
