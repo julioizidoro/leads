@@ -7,11 +7,13 @@ package br.com.leadws.Controller;
 
 import br.com.leadws.facade.ClienteFacade;
 import br.com.leadws.facade.ContatoFacade;
+import br.com.leadws.facade.LeadControleFacade;
 import br.com.leadws.facade.LeadFacade;
 import br.com.leadws.facade.UnidadeFacade;
 import br.com.leadws.model.Cliente;
 import br.com.leadws.model.Leads;
 import br.com.leadws.model.Lead;
+import br.com.leadws.model.Leadcontrole;
 import br.com.leadws.model.Parametroslead;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,6 +52,12 @@ public class GerarLeadController {
                 idContato = lista.get(i).getId();
                 salvarLeads(lista.get(i));
             }
+            Leadcontrole leadControle = new Leadcontrole();
+            leadControle.setData(new Date());
+            leadControle.setHora(formatarHoraString());
+            leadControle.setNumeroleads(lista.size());
+            LeadControleFacade leadControleFacade = new LeadControleFacade();
+            leadControleFacade.salvar(leadControle);
         }
     }
 
