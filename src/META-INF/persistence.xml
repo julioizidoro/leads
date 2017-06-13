@@ -14,6 +14,7 @@
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value="simples"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+      
     </properties>
   </persistence-unit>
   <persistence-unit name="leadPU" transaction-type="RESOURCE_LOCAL">
