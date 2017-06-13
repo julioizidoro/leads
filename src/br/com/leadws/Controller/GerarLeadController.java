@@ -58,6 +58,13 @@ public class GerarLeadController {
             leadControle.setNumeroleads(lista.size());
             LeadControleFacade leadControleFacade = new LeadControleFacade();
             leadControleFacade.salvar(leadControle);
+        }else {
+            Leadcontrole leadControle = new Leadcontrole();
+            leadControle.setData(new Date());
+            leadControle.setHora(formatarHoraString());
+            leadControle.setNumeroleads(0);
+            LeadControleFacade leadControleFacade = new LeadControleFacade();
+            leadControleFacade.salvar(leadControle);
         }
     }
 

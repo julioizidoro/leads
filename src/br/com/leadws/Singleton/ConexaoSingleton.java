@@ -48,20 +48,19 @@ public class ConexaoSingleton {
     }
     
     public static EntityManager getInstanceLead() {
-        if (emfLead == null) {
-            ParametrosLeadFacade parametrosLeadFacade = new ParametrosLeadFacade();
-            Parametroslead parametrosLead = parametrosLeadFacade.get();
-            Map mapa = new HashMap();
-            mapa.put("hibernate.connection.url", "jdbc:mysql://" + parametrosLead.getBanco());
-            mapa.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-            mapa.put("hibernate.connection.password", parametrosLead.getSenha());
-            mapa.put("hibernate.connection.username", parametrosLead.getUsuairo());
-            mapa.put("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider");
-            mapa.put("hibernate.show_sql", "true");
-            mapa.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-            emfLead = Persistence.createEntityManagerFactory("leadPU", mapa);
-            managerLead = emfLead.createEntityManager();
-        }
+        managerLead = null;
+        ParametrosLeadFacade parametrosLeadFacade = new ParametrosLeadFacade();
+        Parametroslead parametrosLead = parametrosLeadFacade.get();
+        Map mapa = new HashMap();
+        mapa.put("hibernate.connection.url", "jdbc:mysql://" + parametrosLead.getBanco());
+        mapa.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+        mapa.put("hibernate.connection.password", parametrosLead.getSenha());
+        mapa.put("hibernate.connection.username", parametrosLead.getUsuairo());
+        mapa.put("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider");
+        mapa.put("hibernate.show_sql", "true");
+        mapa.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        emfLead = Persistence.createEntityManagerFactory("leadPU", mapa);
+        managerLead = emfLead.createEntityManager();
         if (!managerLead.isOpen()) {
             System.out.print("Verifique conexão com banco de dados LEAD");
         }
