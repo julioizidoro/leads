@@ -33,7 +33,7 @@ public class ClienteDao {
         Query q = manager.createQuery("select c from Cliente c where c.email='" + email + "'");
         Cliente cliente = null;
         if (q.getResultList().size() > 0) {
-            cliente = (Cliente) q.getSingleResult();
+            cliente = (Cliente) q.getResultList().get(0);
         }
         tx.commit();
         return cliente;
