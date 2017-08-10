@@ -16,14 +16,14 @@ import javax.persistence.Query;
  */
 public class UnidadeDao {
     
-    public int getUsuarioResponsavel(int idUnidade){
+    public Unidadenegocio getUsuarioResponsavel(int idUnidade){
         EntityManager manager = ConexaoSingleton.getInstanceSysTM();
         Query q = manager.createQuery("select u from Unidadenegocio u where u.idunidadeNegocio=" + idUnidade);
+        Unidadenegocio unidade = null;
         if (q.getResultList().size()>0){
-            Unidadenegocio unidade = (Unidadenegocio) q.getResultList().get(0);
-            return unidade.getResponsavelcrm();
+            unidade = (Unidadenegocio) q.getResultList().get(0);
         }
-        return 0;
+        return unidade;
     }
     
 }

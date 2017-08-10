@@ -30,6 +30,7 @@ public final class FrmLead extends javax.swing.JFrame {
         initComponents();
         ParametrosLeadFacade parametrosLeadFacade = new ParametrosLeadFacade();
         parametrosLead = parametrosLeadFacade.get();
+        primeiraLeitura();
         iniciar();
     }
 
@@ -103,6 +104,16 @@ public final class FrmLead extends javax.swing.JFrame {
         });
     }
     
+    public void primeiraLeitura(){
+        GerarLeadController gerarLeadController = new GerarLeadController(parametrosLead);
+        gerarLeadController.gerarListaUnidade();
+        if (gerarLeadController.getIdContato() > 0) {
+            ParametrosLeadFacade parametrosLeadFacade = new ParametrosLeadFacade();
+            parametrosLead.setIdcontato(gerarLeadController.getIdContato());
+            parametrosLead = parametrosLeadFacade.salvar(parametrosLead);
+        }
+    }
+    
     
     public void  iniciar() {
         toolkit = Toolkit.getDefaultToolkit();
@@ -111,7 +122,7 @@ public final class FrmLead extends javax.swing.JFrame {
             @Override
             public void run() {
                 GerarLeadController gerarLeadController = new GerarLeadController(parametrosLead);
-                gerarLeadController.gerarListaLead();
+                gerarLeadController.gerarListaUnidade();
                 if (gerarLeadController.getIdContato() > 0) {
                     ParametrosLeadFacade parametrosLeadFacade = new ParametrosLeadFacade();
                     parametrosLead.setIdcontato(gerarLeadController.getIdContato());

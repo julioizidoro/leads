@@ -10,11 +10,14 @@ import br.com.leadws.facade.ContatoFacade;
 import br.com.leadws.facade.LeadControleFacade;
 import br.com.leadws.facade.LeadFacade;
 import br.com.leadws.facade.UnidadeFacade;
+import br.com.leadws.facade.UsuarioFacade;
 import br.com.leadws.model.Cliente;
 import br.com.leadws.model.Leads;
 import br.com.leadws.model.Lead;
 import br.com.leadws.model.Leadcontrole;
 import br.com.leadws.model.Parametroslead;
+import br.com.leadws.model.Unidadenegocio;
+import br.com.leadws.model.Usuario;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +32,7 @@ public class GerarLeadController {
     private Parametroslead parametrosLead;
     private boolean jaecliente;
     private int idContato;
+    int numeroLead;
 
     public int getIdContato() {
         return idContato;
@@ -43,28 +47,56 @@ public class GerarLeadController {
         
     }
     
-    public void gerarListaLead(){
+    public void gerarListaUnidade(){
+        idContato = 0;
+        numeroLead = 0;
+        UnidadeFacade unidadeFacade = new UnidadeFacade();
+        Unidadenegocio unidade = unidadeFacade.getUsuarioResponsavel(1);
+        gerarListaLead(unidade);
+        unidade = unidadeFacade.getUsuarioResponsavel(1);
+        gerarListaLead(unidade);
+        Leadcontrole leadControle = new Leadcontrole();
+        leadControle.setData(new Date());
+        leadControle.setHora(formatarHoraString());
+        leadControle.setNumeroleads(numeroLead);
+        LeadControleFacade leadControleFacade = new LeadControleFacade();
+        leadControleFacade.salvar(leadControle);
+    }
+    
+    public void gerarListaLead(Unidadenegocio unidade) {
         ContatoFacade contatoFacade = new ContatoFacade();
-        List<Leads> lista = contatoFacade.list(parametrosLead.getIdcontato());
-        if (lista!=null){
-            idContato=0;
-            for (int i=0;i<lista.size();i++){
-                idContato = lista.get(i).getId();
-                salvarLeads(lista.get(i));
+        List<Leads> lista = contatoFacade.list(parametrosLead.getIdcontato(), unidade.getIdunidadeNegocio());
+        if (lista != null) {
+            if (unidade.isLeadautomatica()) {
+                UsuarioFacade usuarioFacade = new UsuarioFacade();
+                List<Usuario> listaUsuairo = usuarioFacade.consultar(unidade.getIdunidadeNegocio());
+                if (listaUsuairo != null) {
+                    int contador = 0;
+                    for (int i = 0; i < listaUsuairo.size(); i++) {
+                        if (listaUsuairo.get(i).isRecebeleadautomatica()) {
+                            contador = i;
+                            listaUsuairo.get(i).setRecebeleadautomatica(false);
+                            usuarioFacade.salvar(listaUsuairo.get(i));
+                            i = 10000;
+                        }
+                    }
+                    for (int i = 0; i < lista.size(); i++) {
+                        salvarLeads(lista.get(i), listaUsuairo.get(contador), unidade);
+                        contador++;
+                        if (contador >= listaUsuairo.size()) {
+                            contador = 0;
+                        }
+                    }
+                    listaUsuairo.get(contador).setRecebeleadautomatica(true);
+                    usuarioFacade.salvar(listaUsuairo.get(contador));
+                }
+            } else {
+                for (int i = 0; i < lista.size(); i++) {
+                    idContato = lista.get(i).getId();
+                    salvarLeads(lista.get(i), null, unidade);
+                }
+                numeroLead = numeroLead + lista.size();
             }
-            Leadcontrole leadControle = new Leadcontrole();
-            leadControle.setData(new Date());
-            leadControle.setHora(formatarHoraString());
-            leadControle.setNumeroleads(lista.size());
-            LeadControleFacade leadControleFacade = new LeadControleFacade();
-            leadControleFacade.salvar(leadControle);
-        }else {
-            Leadcontrole leadControle = new Leadcontrole();
-            leadControle.setData(new Date());
-            leadControle.setHora(formatarHoraString());
-            leadControle.setNumeroleads(0);
-            LeadControleFacade leadControleFacade = new LeadControleFacade();
-            leadControleFacade.salvar(leadControle);
         }
     }
 
@@ -76,7 +108,7 @@ public class GerarLeadController {
         this.parametrosLead = parametrosLead;
     }
     
-    public void salvarLeads(Leads contato){
+    public void salvarLeads(Leads contato, Usuario usuario, Unidadenegocio unidade){
         jaecliente = true;
         Cliente cliente = salvarCliente(contato);
         Lead lead = new Lead();
@@ -88,21 +120,18 @@ public class GerarLeadController {
         lead.setTipocontato(1);
         lead.setPais(5);
         lead.setPublicidade(parametrosLead.getPublicidade());
-        lead.setUnidadenegocio(contato.getUnidade());
+        lead.setUnidadenegocio(unidade.getIdunidadeNegocio());
         lead.setMotivocancelamento1(1);
         lead.setDatarecebimento(new Date());
         lead.setHorarecebimento(formatarHoraString());
-        UnidadeFacade unidadeFacade = new UnidadeFacade();
-        int responsavel = responsavel = unidadeFacade.getUsuarioResponsavel(lead.getUnidadenegocio());
-        if (contato.getUnidade()==0){
-            responsavel =6;
-        }
-        lead.setUsuario(responsavel);
+        if (usuario!=null){
+            lead.setUsuario(usuario.getIdusuario());
+        }else lead.setUsuario(unidade.getResponsavelcrm());
         lead.setIdcontrole(contato.getId());
         LeadFacade leadFacede = new LeadFacade();
         leadFacede.salvar(lead);
     }
-    
+     
     public Cliente salvarCliente(Leads contato){
         ClienteFacade clienteFacade = new ClienteFacade();
         Cliente cliente = clienteFacade.consultarEmail(contato.getEmail());

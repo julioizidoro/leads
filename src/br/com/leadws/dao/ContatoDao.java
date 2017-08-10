@@ -39,9 +39,9 @@ public class ContatoDao {
 //        }
 //        return null;
 //    }   
-    public List<Leads> list(int idContato) throws SQLException {
+    public List<Leads> list(int idContato, int unidade) throws SQLException {
         EntityManager manager = ConexaoSingleton.getInstanceLead();
-        Query q = manager.createQuery("select c from Leads c where c.id>" + idContato + " and c.unidade=2");
+        Query q = manager.createQuery("select c from Leads c where c.id>" + idContato + " and c.unidade=" + unidade);
         if (q.getResultList().size() > 0) {
             return q.getResultList();
         }

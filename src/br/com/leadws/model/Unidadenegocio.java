@@ -35,6 +35,10 @@ public class Unidadenegocio implements Serializable {
     private String nomeFantasia;
     @Column(name = "responsavelcrm")
     private Integer responsavelcrm;
+    @Column(name = "leadautomatica")
+    private boolean leadautomatica;
+    
+    
 
     public Unidadenegocio() {
     }
@@ -69,6 +73,14 @@ public class Unidadenegocio implements Serializable {
 
     public void setResponsavelcrm(Integer responsavelcrm) {
         this.responsavelcrm = responsavelcrm;
+    }
+
+    public boolean isLeadautomatica() {
+        return leadautomatica;
+    }
+
+    public void setLeadautomatica(boolean leadautomatica) {
+        this.leadautomatica = leadautomatica;
     }
 
     

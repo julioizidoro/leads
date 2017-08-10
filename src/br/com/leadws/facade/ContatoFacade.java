@@ -18,10 +18,10 @@ import java.util.logging.Logger;
  */
 public class ContatoFacade {
     
-    public List<Leads> list(int idContato){
+    public List<Leads> list(int idContato, int unidade){
         ContatoDao contatoDao = new ContatoDao();
         try {
-            return contatoDao.list(idContato);
+            return contatoDao.list(idContato, unidade);
         } catch (SQLException ex) {
             Logger.getLogger(ContatoFacade.class.getName()).log(Level.SEVERE, null, ex);
             return null;

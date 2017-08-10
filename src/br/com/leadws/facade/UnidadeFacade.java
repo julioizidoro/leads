@@ -6,6 +6,7 @@
 package br.com.leadws.facade;
 
 import br.com.leadws.dao.UnidadeDao;
+import br.com.leadws.model.Unidadenegocio;
 
 /**
  *
@@ -13,7 +14,7 @@ import br.com.leadws.dao.UnidadeDao;
  */
 public class UnidadeFacade {
     
-    public int getUsuarioResponsavel(int idUnidade){
+    public Unidadenegocio getUsuarioResponsavel(int idUnidade){
         UnidadeDao unidadeDao = new UnidadeDao();
         return unidadeDao.getUsuarioResponsavel(idUnidade);
     }
