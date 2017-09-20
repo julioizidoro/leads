@@ -34,6 +34,7 @@ public class UsuarioDao {
     public void salvar(Usuario usuario){
         EntityManager manager = ConexaoSingleton.getInstanceSysTM();
         EntityTransaction tx = manager.getTransaction();
+        tx.begin();
         manager.merge(usuario);
         tx.commit();
     }

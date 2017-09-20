@@ -30,12 +30,15 @@ public class Usuario implements Serializable {
     @Column(name = "idusuario")
     private Integer idusuario;
     @Column(name = "unidadeNegocio_idunidadeNegocio")
-    @ManyToOne(optional = false)
     private int unidadenegocio;
     @Column(name = "recebeleadautomatica")
     private boolean recebeleadautomatica; 
-  
 
+    public Usuario() {
+    }
+  
+    
+    
     public Usuario(Integer idusuario) {
         this.idusuario = idusuario;
     }

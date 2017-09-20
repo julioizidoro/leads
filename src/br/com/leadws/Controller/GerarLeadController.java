@@ -53,7 +53,7 @@ public class GerarLeadController {
         UnidadeFacade unidadeFacade = new UnidadeFacade();
         Unidadenegocio unidade = unidadeFacade.getUsuarioResponsavel(1);
         gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(1);
+        unidade = unidadeFacade.getUsuarioResponsavel(2);
         gerarListaLead(unidade);
         Leadcontrole leadControle = new Leadcontrole();
         leadControle.setData(new Date());
@@ -72,11 +72,10 @@ public class GerarLeadController {
                 List<Usuario> listaUsuairo = usuarioFacade.consultar(unidade.getIdunidadeNegocio());
                 if (listaUsuairo != null) {
                     int contador = 0;
+                    int idUsuario = unidade.getUsuarioleadautomatica();
                     for (int i = 0; i < listaUsuairo.size(); i++) {
-                        if (listaUsuairo.get(i).isRecebeleadautomatica()) {
-                            contador = i;
-                            listaUsuairo.get(i).setRecebeleadautomatica(false);
-                            usuarioFacade.salvar(listaUsuairo.get(i));
+                        if (listaUsuairo.get(i).getIdusuario()==idUsuario) {
+                            contador = i;                            
                             i = 10000;
                         }
                     }
@@ -87,8 +86,15 @@ public class GerarLeadController {
                             contador = 0;
                         }
                     }
-                    listaUsuairo.get(contador).setRecebeleadautomatica(true);
-                    usuarioFacade.salvar(listaUsuairo.get(contador));
+                    if (contador >= listaUsuairo.size()) {
+                            contador = 0;
+                    }else {
+                        contador++;
+                    }
+                    unidade.setUsuarioleadautomatica(listaUsuairo.get(contador).getIdusuario());
+                    UnidadeFacade unidadeFacade = new  UnidadeFacade();
+                    unidadeFacade.salvar(unidade);
+                  
                 }
             } else {
                 for (int i = 0; i < lista.size(); i++) {

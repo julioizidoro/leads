@@ -8,6 +8,7 @@ package br.com.leadws.dao;
 import br.com.leadws.Singleton.ConexaoSingleton;
 import br.com.leadws.model.Unidadenegocio;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -24,6 +25,14 @@ public class UnidadeDao {
             unidade = (Unidadenegocio) q.getResultList().get(0);
         }
         return unidade;
+    }
+    
+    public void salvar(Unidadenegocio unidade){
+        EntityManager manager = ConexaoSingleton.getInstanceSysTM();
+        EntityTransaction tx = manager.getTransaction();
+        tx.begin();
+        manager.merge(unidade);
+        tx.commit();
     }
     
 }
