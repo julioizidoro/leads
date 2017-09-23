@@ -80,13 +80,15 @@ public class GerarLeadController {
                         }
                     }
                     for (int i = 0; i < lista.size(); i++) {
-                        salvarLeads(lista.get(i), listaUsuairo.get(contador), unidade);
+                        salvarLeads(lista.get(i), listaUsuairo.get(contador), unidade, true);
                         contador++;
-                        if (contador >= listaUsuairo.size()) {
+                        if (contador >= (listaUsuairo.size()-1)) {
                             contador = 0;
                         }
+                        idContato = lista.get(i).getId();
+                        numeroLead = numeroLead + lista.size();
                     }
-                    if (contador >= listaUsuairo.size()) {
+                    if (contador >= (listaUsuairo.size()-1)) {
                             contador = 0;
                     }else {
                         contador++;
@@ -99,7 +101,7 @@ public class GerarLeadController {
             } else {
                 for (int i = 0; i < lista.size(); i++) {
                     idContato = lista.get(i).getId();
-                    salvarLeads(lista.get(i), null, unidade);
+                    salvarLeads(lista.get(i), null, unidade, false);
                 }
                 numeroLead = numeroLead + lista.size();
             }
@@ -114,7 +116,7 @@ public class GerarLeadController {
         this.parametrosLead = parametrosLead;
     }
     
-    public void salvarLeads(Leads contato, Usuario usuario, Unidadenegocio unidade){
+    public void salvarLeads(Leads contato, Usuario usuario, Unidadenegocio unidade, boolean dataEnvio){
         jaecliente = true;
         Cliente cliente = salvarCliente(contato);
         Lead lead = new Lead();
@@ -134,6 +136,9 @@ public class GerarLeadController {
             lead.setUsuario(usuario.getIdusuario());
         }else lead.setUsuario(unidade.getResponsavelcrm());
         lead.setIdcontrole(contato.getId());
+        if (dataEnvio){
+            lead.setDataenvio(new Date());
+        }
         LeadFacade leadFacede = new LeadFacade();
         leadFacede.salvar(lead);
     }
