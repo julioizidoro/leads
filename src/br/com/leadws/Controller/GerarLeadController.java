@@ -7,6 +7,7 @@ package br.com.leadws.Controller;
 
 import br.com.leadws.facade.ClienteFacade;
 import br.com.leadws.facade.ContatoFacade;
+import br.com.leadws.facade.HistoricoFacade;
 import br.com.leadws.facade.LeadControleFacade;
 import br.com.leadws.facade.LeadFacade;
 import br.com.leadws.facade.UnidadeFacade;
@@ -15,6 +16,7 @@ import br.com.leadws.model.Cliente;
 import br.com.leadws.model.Leads;
 import br.com.leadws.model.Lead;
 import br.com.leadws.model.Leadcontrole;
+import br.com.leadws.model.Leadhistorico;
 import br.com.leadws.model.Parametroslead;
 import br.com.leadws.model.Unidadenegocio;
 import br.com.leadws.model.Usuario;
@@ -31,29 +33,25 @@ public class GerarLeadController {
     
     private Parametroslead parametrosLead;
     private boolean jaecliente;
-    private int idContato;
-    int numeroLead;
-
-    public int getIdContato() {
-        return idContato;
-    }
-
-    public void setIdContato(int idContato) {
-        this.idContato = idContato;
-    }
-
+    private int numeroLead;
+    private String emailAnterior;
+    
     public GerarLeadController(Parametroslead parametrosLead) {
         this.parametrosLead = parametrosLead;
         
     }
     
     public void gerarListaUnidade(){
-        idContato = 0;
+        emailAnterior = "";
         numeroLead = 0;
         UnidadeFacade unidadeFacade = new UnidadeFacade();
         Unidadenegocio unidade = unidadeFacade.getUsuarioResponsavel(1);
         gerarListaLead(unidade);
         unidade = unidadeFacade.getUsuarioResponsavel(2);
+        gerarListaLead(unidade);
+        unidade = unidadeFacade.getUsuarioResponsavel(6);
+        gerarListaLead(unidade);
+        unidade = unidadeFacade.getUsuarioResponsavel(10);
         gerarListaLead(unidade);
         Leadcontrole leadControle = new Leadcontrole();
         leadControle.setData(new Date());
@@ -65,7 +63,11 @@ public class GerarLeadController {
     
     public void gerarListaLead(Unidadenegocio unidade) {
         ContatoFacade contatoFacade = new ContatoFacade();
-        List<Leads> lista = contatoFacade.list(parametrosLead.getIdcontato(), unidade.getIdunidadeNegocio());
+        int idunidade =0;
+        if (unidade.getIdunidadeNegocio()!=6){
+            idunidade = unidade.getIdunidadeNegocio();
+        }
+        List<Leads> lista = contatoFacade.list(parametrosLead.getIdcontato(), idunidade);
         if (lista != null) {
             if (unidade.isLeadautomatica()) {
                 UsuarioFacade usuarioFacade = new UsuarioFacade();
@@ -79,13 +81,15 @@ public class GerarLeadController {
                             i = 10000;
                         }
                     }
+                    boolean salvouLead = false;
                     for (int i = 0; i < lista.size(); i++) {
-                        salvarLeads(lista.get(i), listaUsuairo.get(contador), unidade, true);
-                        contador++;
+                        salvouLead= salvarLeads(lista.get(i), listaUsuairo.get(contador), unidade, true);
+                        if (salvouLead){
+                            contador++;
+                        }
                         if (contador >= (listaUsuairo.size()-1)) {
                             contador = 0;
                         }
-                        idContato = lista.get(i).getId();
                         numeroLead = numeroLead + lista.size();
                     }
                     if (contador >= (listaUsuairo.size()-1)) {
@@ -100,7 +104,6 @@ public class GerarLeadController {
                 }
             } else {
                 for (int i = 0; i < lista.size(); i++) {
-                    idContato = lista.get(i).getId();
                     salvarLeads(lista.get(i), null, unidade, false);
                 }
                 numeroLead = numeroLead + lista.size();
@@ -116,33 +119,67 @@ public class GerarLeadController {
         this.parametrosLead = parametrosLead;
     }
     
-    public void salvarLeads(Leads contato, Usuario usuario, Unidadenegocio unidade, boolean dataEnvio){
+    public boolean salvarLeads(Leads contato, Usuario usuario, Unidadenegocio unidade, boolean dataEnvio){
         jaecliente = true;
         Cliente cliente = salvarCliente(contato);
         Lead lead = new Lead();
-        lead.setCliente(cliente.getIdcliente());
-        lead.setJaecliente(jaecliente);
-        lead.setNotas(contato.getMensagem());
-        lead.setProdutos(parametrosLead.getProduto());
-        lead.setSituacao(1);
-        lead.setTipocontato(1);
-        lead.setPais(5);
-        lead.setPublicidade(parametrosLead.getPublicidade());
-        lead.setUnidadenegocio(unidade.getIdunidadeNegocio());
-        lead.setMotivocancelamento1(1);
-        lead.setDatarecebimento(new Date());
-        lead.setHorarecebimento(formatarHoraString());
-        if (usuario!=null){
-            lead.setUsuario(usuario.getIdusuario());
-        }else lead.setUsuario(unidade.getResponsavelcrm());
-        lead.setIdcontrole(contato.getId());
-        if (dataEnvio){
-            lead.setDataenvio(new Date());
-        }
         LeadFacade leadFacede = new LeadFacade();
-        leadFacede.salvar(lead);
+        boolean lancarHistorico = false;
+        if (emailAnterior.equalsIgnoreCase(contato.getEmail())){
+            jaecliente = false;
+            lead = new Lead();
+            lancarHistorico = false;
+        }
+        if (jaecliente){
+            lead = leadFacede.getLead(cliente.getIdcliente());
+            lancarHistorico = true;
+        }else{
+            lead = null;
+        }
+        if (lead == null) {
+            lead = new Lead();
+            lead.setCliente(cliente.getIdcliente());
+            lead.setJaecliente(jaecliente);
+            lead.setNotas(contato.getMensagem());
+            lead.setProdutos(parametrosLead.getProduto());
+            lead.setSituacao(1);
+            lead.setTipocontato(1);
+            lead.setPais(5);
+            lead.setPublicidade(parametrosLead.getPublicidade());
+            lead.setUnidadenegocio(unidade.getIdunidadeNegocio());
+            lead.setMotivocancelamento1(1);
+            lead.setDatarecebimento(new Date());
+            lead.setHorarecebimento(formatarHoraString());
+            if (usuario != null) {
+                lead.setUsuario(usuario.getIdusuario());
+            } else {
+                lead.setUsuario(unidade.getResponsavelcrm());
+            }
+            lead.setIdcontrole(contato.getId());
+            if (dataEnvio) {
+                lead.setDataenvio(new Date());
+            }
+            leadFacede.salvar(lead);
+            emailAnterior = contato.getEmail();
+            return true;
+        }else {
+            if (lancarHistorico){
+                lancarHistoricoLead(lead, contato);
+                return false;
+            }else return false;
+        }
     }
-     
+    
+    public void lancarHistoricoLead(Lead lead, Leads contato){
+        Leadhistorico historico = new Leadhistorico();
+        historico.setCliente(lead.getCliente());
+        historico.setDatahistorico(new Date());
+        historico.setHistorico("Nova solictação do cliente via fale coosco para unidade " + contato.getUnidade_desc());
+        historico.setTipocontato(1);
+        HistoricoFacade historicoFacade = new HistoricoFacade();
+        historicoFacade.salvar(historico);
+    }
+
     public Cliente salvarCliente(Leads contato){
         ClienteFacade clienteFacade = new ClienteFacade();
         Cliente cliente = clienteFacade.consultarEmail(contato.getEmail());
@@ -185,5 +222,7 @@ public class GerarLeadController {
 	String formattedDate = formato.format(new Date());
 	return formattedDate;
     }
+    
+    
     
 }

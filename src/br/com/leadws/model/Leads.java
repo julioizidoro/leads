@@ -38,6 +38,8 @@ public class Leads implements Serializable {
     private String telefone;
     @Column(name = "unidade")
     private Integer unidade;
+    @Column(name = "unidade_desc")
+    private String unidade_desc;
     @Lob
     @Column(name = "mensagem")
     private String mensagem;
@@ -95,6 +97,14 @@ public class Leads implements Serializable {
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+
+    public String getUnidade_desc() {
+        return unidade_desc;
+    }
+
+    public void setUnidade_desc(String unidade_desc) {
+        this.unidade_desc = unidade_desc;
     }
 
     @Override

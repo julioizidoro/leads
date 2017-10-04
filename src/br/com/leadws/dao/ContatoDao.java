@@ -47,5 +47,14 @@ public class ContatoDao {
         }
         return null;
     }
+    
+    public int getIdLead(){
+        EntityManager manager = ConexaoSingleton.getInstanceLead();
+        Query q = manager.createQuery("SELECT MAX(id) FROM Leads");
+        if (q.getResultList().size() > 0) {
+            return (int) q.getResultList().get(0);
+        }
+        return 0;
+    }
 
 }

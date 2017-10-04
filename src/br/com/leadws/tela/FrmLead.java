@@ -6,6 +6,7 @@
 package br.com.leadws.tela;
 
 import br.com.leadws.Controller.GerarLeadController;
+import br.com.leadws.facade.ContatoFacade;
 import br.com.leadws.facade.ParametrosLeadFacade;
 import br.com.leadws.model.Parametroslead;
 import java.awt.Toolkit;
@@ -107,9 +108,11 @@ public final class FrmLead extends javax.swing.JFrame {
     public void primeiraLeitura(){
         GerarLeadController gerarLeadController = new GerarLeadController(parametrosLead);
         gerarLeadController.gerarListaUnidade();
-        if (gerarLeadController.getIdContato() > 0) {
+        ContatoFacade contatoFacade = new ContatoFacade();
+        int idContato = contatoFacade.getIdLead();
+        if (idContato > 0) {
             ParametrosLeadFacade parametrosLeadFacade = new ParametrosLeadFacade();
-            parametrosLead.setIdcontato(gerarLeadController.getIdContato());
+            parametrosLead.setIdcontato(idContato);
             parametrosLead = parametrosLeadFacade.salvar(parametrosLead);
         }
     }
@@ -123,9 +126,11 @@ public final class FrmLead extends javax.swing.JFrame {
             public void run() {
                 GerarLeadController gerarLeadController = new GerarLeadController(parametrosLead);
                 gerarLeadController.gerarListaUnidade();
-                if (gerarLeadController.getIdContato() > 0) {
+                ContatoFacade contatoFacade = new ContatoFacade();
+                int idContato = contatoFacade.getIdLead();
+                if (idContato > 0) {
                     ParametrosLeadFacade parametrosLeadFacade = new ParametrosLeadFacade();
-                    parametrosLead.setIdcontato(gerarLeadController.getIdContato());
+                    parametrosLead.setIdcontato(idContato);
                     parametrosLead = parametrosLeadFacade.salvar(parametrosLead);
                 }
             }

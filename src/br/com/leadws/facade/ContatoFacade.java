@@ -28,4 +28,9 @@ public class ContatoFacade {
         }
     }
     
+    public int getIdLead(){
+        ContatoDao contatoDao = new ContatoDao();
+        return contatoDao.getIdLead();
+    }
+    
 }

@@ -18,4 +18,9 @@ public class LeadFacade {
         LeadDao leadDao = new LeadDao();
         return leadDao.salvar(lead);
     }
+    
+    public Lead getLead(int idCliente){
+        LeadDao leadDao = new LeadDao();
+        return leadDao.getLead(idCliente);
+    }
 }
