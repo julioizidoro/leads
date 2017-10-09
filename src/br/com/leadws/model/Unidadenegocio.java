@@ -33,8 +33,6 @@ public class Unidadenegocio implements Serializable {
     private String razaoSocial;
     @Column(name = "nomeFantasia")
     private String nomeFantasia;
-    @Column(name = "responsavelcrm")
-    private Integer responsavelcrm;
     @Column(name = "leadautomatica")
     private boolean leadautomatica;
     @Column(name = "usuarioleadautomatica")
@@ -68,14 +66,6 @@ public class Unidadenegocio implements Serializable {
 
     public void setNomeFantasia(String nomeFantasia) {
         this.nomeFantasia = nomeFantasia;
-    }
-
-    public Integer getResponsavelcrm() {
-        return responsavelcrm;
-    }
-
-    public void setResponsavelcrm(Integer responsavelcrm) {
-        this.responsavelcrm = responsavelcrm;
     }
 
     public boolean isLeadautomatica() {

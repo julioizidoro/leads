@@ -11,6 +11,7 @@ import br.com.leadws.facade.ContatoFacade;
 import br.com.leadws.facade.HistoricoFacade;
 import br.com.leadws.facade.LeadControleFacade;
 import br.com.leadws.facade.LeadFacade;
+import br.com.leadws.facade.LeadResponsavelFacade;
 import br.com.leadws.facade.UnidadeFacade;
 import br.com.leadws.facade.UsuarioFacade;
 import br.com.leadws.model.Avisos;
@@ -20,6 +21,7 @@ import br.com.leadws.model.Leads;
 import br.com.leadws.model.Lead;
 import br.com.leadws.model.Leadcontrole;
 import br.com.leadws.model.Leadhistorico;
+import br.com.leadws.model.Leadresponsavel;
 import br.com.leadws.model.Parametroslead;
 import br.com.leadws.model.Unidadenegocio;
 import br.com.leadws.model.Usuario;
@@ -38,6 +40,7 @@ public class GerarLeadController {
     private boolean jaecliente;
     private int numeroLead;
     private String emailAnterior;
+    List<Leadresponsavel> listaLeadResponsavel;
     
     public GerarLeadController(Parametroslead parametrosLead) {
         this.parametrosLead = parametrosLead;
@@ -81,6 +84,7 @@ public class GerarLeadController {
             idunidade = unidade.getIdunidadeNegocio();
         }
         List<Leads> lista = contatoFacade.list(parametrosLead.getIdcontato(), idunidade);
+        listaLeadResponsavel = null;
         if (lista != null) {
             if (unidade.isLeadautomatica()) {
                 UsuarioFacade usuarioFacade = new UsuarioFacade();
@@ -98,7 +102,7 @@ public class GerarLeadController {
                     for (int i = 0; i < lista.size(); i++) {
                         Lead lead = salvarLeads(lista.get(i), listaUsuairo.get(contador), unidade, true);
                         if (lead !=null){
-                            criarAviso(unidade.getIdunidadeNegocio(), listaUsuairo.get(contador).getIdusuario());
+                            listaResponsavelUnidade(unidade.getIdunidadeNegocio(), listaUsuairo.get(contador).getIdusuario());
                             contador++;
                         }
                         if (contador >= (listaUsuairo.size()-1)) {
@@ -118,6 +122,10 @@ public class GerarLeadController {
                 }
             } else {
                 boolean salvou= false;
+                if (listaLeadResponsavel==null){
+                     LeadResponsavelFacade leadResponsavelFacade = new LeadResponsavelFacade();
+                    listaLeadResponsavel = leadResponsavelFacade.list(idunidade);
+                }
                 for (int i = 0; i < lista.size(); i++) {
                    Lead lead = salvarLeads(lista.get(i), null, unidade, false);
                    if (!salvou){
@@ -127,7 +135,7 @@ public class GerarLeadController {
                    }
                 }
                 if (salvou){
-                    criarAviso(unidade.getIdunidadeNegocio(), unidade.getResponsavelcrm());
+                    listaResponsavelUnidade(unidade.getIdunidadeNegocio(), 0);
                 }
                 numeroLead = numeroLead + lista.size();
             }
@@ -176,7 +184,9 @@ public class GerarLeadController {
             if (usuario != null) {
                 lead.setUsuario(usuario.getIdusuario());
             } else {
-                lead.setUsuario(unidade.getResponsavelcrm());
+                if (listaLeadResponsavel!=null){
+                    lead.setUsuario(listaLeadResponsavel.get(0).getUsuario());
+                }
             }
             lead.setIdcontrole(contato.getId());
             if (dataEnvio) {
@@ -244,6 +254,18 @@ public class GerarLeadController {
 	DateFormat formato = new SimpleDateFormat("HH:mm:ss");
 	String formattedDate = formato.format(new Date());
 	return formattedDate;
+    }
+    
+    public void listaResponsavelUnidade(int unidade, int usuario){
+        if (usuario==0){
+            if (listaLeadResponsavel!=null){
+                for(int i=0;i<listaLeadResponsavel.size();i++){
+                    criarAviso(unidade, listaLeadResponsavel.get(i).getUsuario());
+                }
+            }
+        }else {
+            criarAviso(unidade, usuario);
+        }
     }
     
     public void criarAviso(int unidade, int usuario){
