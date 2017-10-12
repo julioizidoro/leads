@@ -259,30 +259,37 @@ public class GerarLeadController {
     public void listaResponsavelUnidade(int unidade, int usuario){
         if (usuario==0){
             if (listaLeadResponsavel!=null){
+                Avisos aviso = criarAviso(unidade);
                 for(int i=0;i<listaLeadResponsavel.size();i++){
-                    criarAviso(unidade, listaLeadResponsavel.get(i).getUsuario());
+                    criarAvisoUsuario(aviso, listaLeadResponsavel.get(i).getUsuario());
                 }
             }
         }else {
-            criarAviso(unidade, usuario);
+            Avisos aviso = criarAviso(unidade);
+            criarAvisoUsuario(aviso, usuario);
         }
     }
     
-    public void criarAviso(int unidade, int usuario){
+    public Avisos criarAviso(int unidade){
         Avisos aviso  = new Avisos();
         aviso.setData(new Date());
         aviso.setIdunidade(unidade);
         aviso.setImagem("lead");
         aviso.setLiberar(false);
         aviso.setTexto("Novo Lead recebido do Fale Conosco cliente");
-        aviso.setUsuario(usuario);
+        aviso.setUsuario(1);
         AvisosFacade avisosFacade = new AvisosFacade();
         aviso = avisosFacade.salvar(aviso);
+        return aviso;
+    }
+    
+    public void criarAvisoUsuario(Avisos aviso, int idusuario){
         
         Avisousuario avisoUsuario = new Avisousuario();
         avisoUsuario.setAvisos(aviso.getIdavisos());
-        avisoUsuario.setUsuario(usuario);
+        avisoUsuario.setUsuario(idusuario);
         avisoUsuario.setVisto(false);
+        AvisosFacade avisosFacade = new AvisosFacade();
         avisosFacade.salvar(avisoUsuario);
     }
     
