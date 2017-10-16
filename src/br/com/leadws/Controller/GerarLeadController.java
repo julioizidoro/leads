@@ -289,6 +289,7 @@ public class GerarLeadController {
         aviso.setLiberar(false);
         aviso.setTexto("Novo Lead recebido do Fale Conosco cliente");
         aviso.setUsuario(1);
+        aviso.setLiberar(true);
         AvisosFacade avisosFacade = new AvisosFacade();
         aviso = avisosFacade.salvar(aviso);
         return aviso;
