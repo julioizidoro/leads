@@ -69,6 +69,14 @@ public class GerarLeadController {
         gerarListaLead(unidade);
         unidade = unidadeFacade.getUsuarioResponsavel(9);//Maringa
         gerarListaLead(unidade);
+        unidade = unidadeFacade.getUsuarioResponsavel(58);//Mogi Guaçu
+        gerarListaLead(unidade);
+        unidade = unidadeFacade.getUsuarioResponsavel(60);//Alphaville
+        gerarListaLead(unidade);
+        unidade = unidadeFacade.getUsuarioResponsavel(4);//Belo Horizonte
+        gerarListaLead(unidade);
+        unidade = unidadeFacade.getUsuarioResponsavel(11);//Belo Horizonte
+        gerarListaLead(unidade);
         Leadcontrole leadControle = new Leadcontrole();
         leadControle.setData(new Date());
         leadControle.setHora(formatarHoraString());
@@ -124,6 +132,9 @@ public class GerarLeadController {
                 boolean salvou= false;
                 if (listaLeadResponsavel==null){
                      LeadResponsavelFacade leadResponsavelFacade = new LeadResponsavelFacade();
+                     if (idunidade==0){
+                         idunidade=6;
+                     }
                     listaLeadResponsavel = leadResponsavelFacade.list(idunidade);
                 }
                 for (int i = 0; i < lista.size(); i++) {
