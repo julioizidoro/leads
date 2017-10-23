@@ -37,6 +37,8 @@ public class Unidadenegocio implements Serializable {
     private boolean leadautomatica;
     @Column(name = "usuarioleadautomatica")
     private int usuarioleadautomatica;
+    @Column(name = "situacao")
+    private boolean situacao;
     
     
     
@@ -82,6 +84,14 @@ public class Unidadenegocio implements Serializable {
 
     public void setUsuarioleadautomatica(int usuarioleadautomatica) {
         this.usuarioleadautomatica = usuarioleadautomatica;
+    }
+
+    public boolean isSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
     }
 
     

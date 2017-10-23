@@ -25,13 +25,19 @@ public class ConexaoSingleton {
     private static EntityManager managerSysTM= null;
     private static EntityManagerFactory emfLead = null;
     private static EntityManager managerLead= null;
-    private static Connection conexao;
+   
     
     
     public static EntityManager getInstanceSysTM() {
+//        emfSysTM = null;
+//        if (managerSysTM!=null){
+//            if (managerSysTM.isOpen()){
+//                managerSysTM.close();
+//            }
+//        }
         if (emfSysTM == null) {
             Map mapa = new HashMap();
-            mapa.put("hibernate.connection.url", "jdbc:mysql://www.systm.com.br:8081/systm");
+            mapa.put("hibernate.connection.url", "jdbc:mysql://192.168.25.170:8082/systm");
             mapa.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
             mapa.put("hibernate.connection.password", "simples");
             mapa.put("hibernate.connection.username", "root");

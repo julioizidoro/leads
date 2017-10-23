@@ -51,32 +51,43 @@ public class GerarLeadController {
         emailAnterior = "";
         numeroLead = 0;
         UnidadeFacade unidadeFacade = new UnidadeFacade();
-        Unidadenegocio unidade = unidadeFacade.getUsuarioResponsavel(1);//Floripa
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(2);//Curitiba
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(6);//Matriz
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(10);//Chapeco
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(23);//Porto Alegre
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(5);//Moema
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(3);//Balneario
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(54);//Juveve
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(9);//Maringa
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(58);//Mogi Guaçu
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(60);//Alphaville
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(4);//Belo Horizonte
-        gerarListaLead(unidade);
-        unidade = unidadeFacade.getUsuarioResponsavel(11);//Belo Horizonte
-        gerarListaLead(unidade);
+//        Unidadenegocio unidade = unidadeFacade.getUsuarioResponsavel(1);//Floripa
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(2);//Curitiba
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(6);//Matriz
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(10);//Chapeco
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(23);//Porto Alegre
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(5);//Moema
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(3);//Balneario
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(54);//Juveve
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(9);//Maringa
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(58);//Mogi Guaçu
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(60);//Alphaville
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(4);//Belo Horizonte
+//        gerarListaLead(unidade);
+//        unidade = unidadeFacade.getUsuarioResponsavel(11);//Belo Horizonte
+//        gerarListaLead(unidade);
+        List<Unidadenegocio> listaUnidade = unidadeFacade.getUnidaded();
+        if (listaUnidade!=null){
+            for (int i=0;i<listaUnidade.size();i++){
+                int idUnidade = listaUnidade.get(i).getIdunidadeNegocio();
+                if (idUnidade==6){
+                    idUnidade = 0;
+                }
+                System.out.println(idUnidade);
+                gerarListaLead(listaUnidade.get(i));
+            }
+        }
         Leadcontrole leadControle = new Leadcontrole();
         leadControle.setData(new Date());
         leadControle.setHora(formatarHoraString());
