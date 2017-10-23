@@ -57,5 +57,14 @@ public class ContatoDao {
         }
         return 0;
     }
+    
+    public void salvar(Leads lead){
+        EntityManager manager = ConexaoSingleton.getInstanceLead();
+        manager.getTransaction().begin();
+        lead.setCapturada(true);
+        manager.merge(lead);
+        manager.getTransaction().commit();
+        manager.close();
+    }
 
 }

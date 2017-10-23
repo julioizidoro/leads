@@ -76,6 +76,8 @@ public class Lead implements Serializable {
     private String horarecebimento;
     @Column(name = "datarecebimento")
     private Date datarecebimento;
+    @Column(name = "Urlclient")
+    private String Urlclient;
     
 
     public Lead() {
@@ -248,6 +250,14 @@ public class Lead implements Serializable {
     public String getHorarecebimento(){
         return this.horarecebimento;
     } 
+
+    public String getUrlclient() {
+        return Urlclient;
+    }
+
+    public void setUrlclient(String Urlclient) {
+        this.Urlclient = Urlclient;
+    }
 
     @Override
     public int hashCode() {

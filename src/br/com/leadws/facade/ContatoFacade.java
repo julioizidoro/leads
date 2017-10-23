@@ -33,4 +33,9 @@ public class ContatoFacade {
         return contatoDao.getIdLead();
     }
     
+    public void salvar(Leads lead){
+        ContatoDao contatoDao = new ContatoDao();
+        contatoDao.salvar(lead);
+    }
+    
 }

@@ -43,6 +43,10 @@ public class Leads implements Serializable {
     @Lob
     @Column(name = "mensagem")
     private String mensagem;
+    @Column(name = "Urlclient")
+    private String Urlclient;
+    @Column(name = "capturada")
+    private boolean capturada;
 
     public Leads() {
     }
@@ -105,6 +109,22 @@ public class Leads implements Serializable {
 
     public void setUnidade_desc(String unidade_desc) {
         this.unidade_desc = unidade_desc;
+    }
+
+    public String getUrlclient() {
+        return Urlclient;
+    }
+
+    public void setUrlclient(String Urlclient) {
+        this.Urlclient = Urlclient;
+    }
+
+    public boolean isCapturada() {
+        return capturada;
+    }
+
+    public void setCapturada(boolean capturada) {
+        this.capturada = capturada;
     }
 
     @Override

@@ -203,6 +203,7 @@ public class GerarLeadController {
             lead.setMotivocancelamento1(1);
             lead.setDatarecebimento(new Date());
             lead.setHorarecebimento(formatarHoraString());
+            lead.setUrlclient(contato.getUrlclient());
             if (usuario != null) {
                 lead.setUsuario(usuario.getIdusuario());
             } else {
@@ -215,6 +216,8 @@ public class GerarLeadController {
                 lead.setDataenvio(new Date());
             }
             lead = leadFacede.salvar(lead);
+            ContatoFacade contatoFacade = new ContatoFacade();
+            contatoFacade.salvar(contato);
             emailAnterior = contato.getEmail();
             return lead;
         }else {
