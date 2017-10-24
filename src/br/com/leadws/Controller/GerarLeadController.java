@@ -80,11 +80,6 @@ public class GerarLeadController {
         List<Unidadenegocio> listaUnidade = unidadeFacade.getUnidaded();
         if (listaUnidade!=null){
             for (int i=0;i<listaUnidade.size();i++){
-                int idUnidade = listaUnidade.get(i).getIdunidadeNegocio();
-                if (idUnidade==6){
-                    idUnidade = 0;
-                }
-                System.out.println(idUnidade);
                 gerarListaLead(listaUnidade.get(i));
             }
         }

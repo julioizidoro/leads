@@ -7,7 +7,6 @@ package br.com.leadws.Singleton;
 
 import br.com.leadws.facade.ParametrosLeadFacade;
 import br.com.leadws.model.Parametroslead;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -37,7 +36,7 @@ public class ConexaoSingleton {
 //        }
         if (emfSysTM == null) {
             Map mapa = new HashMap();
-            mapa.put("hibernate.connection.url", "jdbc:mysql://192.168.25.170:8082/systm");
+            mapa.put("hibernate.connection.url", "jdbc:mysql://192.168.0.150:8081/systm");
             mapa.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
             mapa.put("hibernate.connection.password", "simples");
             mapa.put("hibernate.connection.username", "root");
