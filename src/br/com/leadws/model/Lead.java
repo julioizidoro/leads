@@ -81,6 +81,7 @@ public class Lead implements Serializable {
     
 
     public Lead() {
+        idcontrole = 0;
     }
 
     public Integer getIdlead() {

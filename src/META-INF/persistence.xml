@@ -22,10 +22,10 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.185.220.65:3306/travelma_leads"/>
-      <property name="javax.persistence.jdbc.user" value="travelma_user"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://50.116.87.184:3306/trave305_leads"/>
+      <property name="javax.persistence.jdbc.user" value="trave305_leads"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="tr2velm@te!5941"/>
+      <property name="javax.persistence.jdbc.password" value="ckq4I2iq019B"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
     </properties>
   </persistence-unit>
