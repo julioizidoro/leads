@@ -22,7 +22,7 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://50.116.87.184:3306/trave305_leads"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://162.214.0.113:3306/trave305_leads"/>
       <property name="javax.persistence.jdbc.user" value="trave305_leads"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value="ckq4I2iq019B"/>

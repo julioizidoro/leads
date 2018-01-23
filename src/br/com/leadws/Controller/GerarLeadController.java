@@ -216,6 +216,14 @@ public class GerarLeadController {
             emailAnterior = contato.getEmail();
             return lead;
         }else {
+            if (lead.getSituacao()==8){
+                lead.setSituacao(1);
+                if (contato.getMensagem().length()>0){
+                    lead.setNotas(contato.getMensagem());
+                }
+                lead.setDataproximocontato(new Date());
+                lead = leadFacede.salvar(lead);
+            }
             if (lancarHistorico){
                 lancarHistoricoLead(lead, contato);
                 return null;
