@@ -195,6 +195,7 @@ public class GerarLeadController {
             lead.setPais(5);
             lead.setPublicidade(parametrosLead.getPublicidade());
             lead.setUnidadenegocio(unidade.getIdunidadeNegocio());
+            lead.setNomeunidade(contato.getUnidade_desc());
             lead.setMotivocancelamento1(1);
             lead.setDatarecebimento(new Date());
             lead.setHorarecebimento(formatarHoraString());

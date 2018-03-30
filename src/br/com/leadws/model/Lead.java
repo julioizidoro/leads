@@ -78,6 +78,8 @@ public class Lead implements Serializable {
     private Date datarecebimento;
     @Column(name = "Urlclient")
     private String Urlclient;
+    @Column(name = "nomeunidade")
+    private String nomeunidade;
     
 
     public Lead() {
@@ -258,6 +260,14 @@ public class Lead implements Serializable {
 
     public void setUrlclient(String Urlclient) {
         this.Urlclient = Urlclient;
+    }
+
+    public String getNomeunidade() {
+        return nomeunidade;
+    }
+
+    public void setNomeunidade(String nomeunidade) {
+        this.nomeunidade = nomeunidade;
     }
 
     @Override
