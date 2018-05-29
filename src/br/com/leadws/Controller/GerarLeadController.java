@@ -116,7 +116,7 @@ public class GerarLeadController {
                     for (int i = 0; i < lista.size(); i++) {
                         Lead lead = salvarLeads(lista.get(i), listaUsuairo.get(contador), unidade, true);
                         if (lead !=null){
-                            listaResponsavelUnidade(unidade.getIdunidadeNegocio(), listaUsuairo.get(contador).getIdusuario());
+                            listaResponsavelUnidade(unidade.getIdunidadeNegocio(), listaUsuairo.get(contador).getIdusuario(), lista.get(i).getNome());
                             contador++;
                         }
                         if (contador >= (listaUsuairo.size()-1)) {
@@ -152,7 +152,7 @@ public class GerarLeadController {
                    }
                 }
                 if (salvou){
-                    listaResponsavelUnidade(unidade.getIdunidadeNegocio(), 0);
+                    listaResponsavelUnidade(unidade.getIdunidadeNegocio(), 0, " ");
                 }
                 numeroLead = numeroLead + lista.size();
             }
@@ -285,27 +285,27 @@ public class GerarLeadController {
 	return formattedDate;
     }
     
-    public void listaResponsavelUnidade(int unidade, int usuario){
+    public void listaResponsavelUnidade(int unidade, int usuario, String nome){
         if (usuario==0){
             if (listaLeadResponsavel!=null){
-                Avisos aviso = criarAviso(unidade);
+                Avisos aviso = criarAviso(unidade, nome);
                 for(int i=0;i<listaLeadResponsavel.size();i++){
                     criarAvisoUsuario(aviso, listaLeadResponsavel.get(i).getUsuario());
                 }
             }
         }else {
-            Avisos aviso = criarAviso(unidade);
+            Avisos aviso = criarAviso(unidade, nome);
             criarAvisoUsuario(aviso, usuario);
         }
     }
     
-    public Avisos criarAviso(int unidade){
+    public Avisos criarAviso(int unidade, String nome ){
         Avisos aviso  = new Avisos();
         aviso.setData(new Date());
         aviso.setIdunidade(unidade);
         aviso.setImagem("lead");
         aviso.setLiberar(false);
-        aviso.setTexto("Novo Lead recebido do Fale Conosco cliente");
+        aviso.setTexto("Você recebeu uma nova lead - " + nome + ", incluida por SysTM. No dia:" + ConvercaoDataPadrao(new Date()));
         aviso.setUsuario(1);
         aviso.setLiberar(true);
         AvisosFacade avisosFacade = new AvisosFacade();
@@ -323,6 +323,12 @@ public class GerarLeadController {
         avisosFacade.salvar(avisoUsuario);
     }
     
-    
-    
+    public String ConvercaoDataPadrao(Date data) {
+        if (data == null) {
+            return null;
+        }
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFormatada = df.format(data);
+        return dataFormatada;
+    }
 }
