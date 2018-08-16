@@ -36,10 +36,10 @@ public class ConexaoSingleton {
 //        }
         if (emfSysTM == null) {
             Map mapa = new HashMap();
-            mapa.put("hibernate.connection.url", "jdbc:mysql://162.144.94.216:8081/systm");
+            mapa.put("hibernate.connection.url", "jdbc:mysql://tmmysql.cxjytqucztmb.us-east-1.rds.amazonaws.com:3306/systm");
             mapa.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-            mapa.put("hibernate.connection.password", "simples");
-            mapa.put("hibernate.connection.username", "root");
+            mapa.put("hibernate.connection.password", "Travel2018#");
+            mapa.put("hibernate.connection.username", "master");
             mapa.put("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider");
             mapa.put("hibernate.show_sql", "true");
             mapa.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
