@@ -6,6 +6,7 @@
 package br.com.leadws.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -47,6 +49,10 @@ public class Leads implements Serializable {
     private String Urlclient;
     @Column(name = "capturada")
     private boolean capturada;
+    @Transient
+    private Date datanascimento;
+    @Transient
+    private int publicidade;
 
     public Leads() {
     }
@@ -125,6 +131,22 @@ public class Leads implements Serializable {
 
     public void setCapturada(boolean capturada) {
         this.capturada = capturada;
+    }
+
+    public Date getDatanascimento() {
+        return datanascimento;
+    }
+
+    public void setDatanascimento(Date datanascimento) {
+        this.datanascimento = datanascimento;
+    }
+
+    public int getPublicidade() {
+        return publicidade;
+    }
+
+    public void setPublicidade(int publicidade) {
+        this.publicidade = publicidade;
     }
 
     @Override

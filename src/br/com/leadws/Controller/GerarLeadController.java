@@ -169,6 +169,7 @@ public class GerarLeadController {
     
     public Lead salvarLeads(Leads contato, Usuario usuario, Unidadenegocio unidade, boolean dataEnvio){
         jaecliente = true;
+        contato.setPublicidade(11);
         Cliente cliente = salvarCliente(contato);
         Lead lead = new Lead();
         LeadFacade leadFacede = new LeadFacade();
@@ -194,6 +195,7 @@ public class GerarLeadController {
             lead.setTipocontato(1);
             lead.setPais(5);
             lead.setPublicidade(parametrosLead.getPublicidade());
+            lead.setCaptacao("Fale conosco/Site");
             lead.setUnidadenegocio(unidade.getIdunidadeNegocio());
             lead.setNomeunidade(contato.getUnidade_desc());
             lead.setMotivocancelamento1(1);
@@ -251,9 +253,17 @@ public class GerarLeadController {
             cliente.setNome(contato.getNome());
             cliente.setEmail(contato.getEmail());
             cliente.setDataCadastro(new Date());
-            cliente.setFoneCelular(formatTelefone(contato.getTelefone()));
+            if (contato.getPublicidade()!=11){
+                cliente.setFoneCelular(formatTelefoneExcel(contato.getTelefone()));
+            }else{
+                cliente.setFoneCelular(formatTelefone(contato.getTelefone()));
+            }
+            
             cliente.setTipoCliente("FollowUp");
-            cliente.setPublicidade(parametrosLead.getPublicidade());
+            cliente.setPublicidade(contato.getPublicidade());
+            if (contato.getDatanascimento()!=null){
+                cliente.setDataNascimento(contato.getDatanascimento());
+            }
             if (contato.getUnidade()==0){
                 cliente.setUnidadenegocio(6);
             }else cliente.setUnidadenegocio(contato.getUnidade());
@@ -276,6 +286,12 @@ public class GerarLeadController {
                 }
             }
         }
+        return novoFone;
+    }
+    
+    public String formatTelefoneExcel(String fone){
+        String novoFone = "(" + fone.substring(4,2) + ")";
+        novoFone = novoFone + fone.substring(7,10);
         return novoFone;
     }
     

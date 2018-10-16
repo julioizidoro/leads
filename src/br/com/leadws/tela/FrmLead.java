@@ -8,8 +8,16 @@ package br.com.leadws.tela;
 import br.com.leadws.Controller.GerarLeadController;
 import br.com.leadws.facade.ContatoFacade;
 import br.com.leadws.facade.ParametrosLeadFacade;
+import br.com.leadws.facade.UnidadeFacade;
+import br.com.leadws.facade.UsuarioFacade;
+import br.com.leadws.model.Importlead;
+import br.com.leadws.model.Leads;
 import br.com.leadws.model.Parametroslead;
+import br.com.leadws.model.Unidadenegocio;
+import br.com.leadws.model.Usuario;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,10 +53,21 @@ public final class FrmLead extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jTextunidade = new javax.swing.JTextField();
+        jTextpublicidade = new javax.swing.JTextField();
+        jTextdescunidade = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Carregamento de Leads");
+
+        jButton1.setText("Inportar Excel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -56,19 +75,66 @@ public final class FrmLead extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(98, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jButton1)))
                 .addGap(77, 77, 77))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jTextunidade, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextdescunidade)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextpublicidade)
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addComponent(jLabel1)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextunidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextpublicidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextdescunidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       List<Importlead> lista = new ArrayList<Importlead>();
+       GerarLeadController gerarLeadController = new GerarLeadController(parametrosLead);
+        Unidadenegocio unidade = new Unidadenegocio();;
+        UnidadeFacade unidadeFacade = new UnidadeFacade();
+        unidade = unidadeFacade.getUsuarioResponsavel(Integer.parseInt(jTextunidade.getText()));
+        Usuario usuario = new Usuario();
+        UsuarioFacade usuarioFacade  = new UsuarioFacade();
+        usuario = usuarioFacade.consultar(unidade.getIdunidadeNegocio()).get(0);
+       if (lista!=null){
+           for(int i=0;i<lista.size();i++){
+               Importlead importe = lista.get(i);
+               Leads lead = new Leads();
+               lead.setEmail(importe.getEmail());
+               lead.setMensagem(importe.getNota() + " " + importe.getObservacao());
+               lead.setNome(importe.getNome() + " " + importe.getSobrenome());
+               lead.setTelefone(importe.getFone());
+               lead.setDatanascimento(importe.getDatanascimento());
+               lead.setUnidade(Integer.parseInt(jTextdescunidade.getText()));
+               lead.setUnidade_desc(jTextdescunidade.getText());
+               lead.setUrlclient("Feira");
+               lead.setPublicidade(Integer.parseInt(jTextpublicidade.getText()));
+               gerarLeadController.salvarLeads(lead, usuario, unidade, false);
+           }
+           
+       }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,6 +209,10 @@ public final class FrmLead extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField jTextdescunidade;
+    private javax.swing.JTextField jTextpublicidade;
+    private javax.swing.JTextField jTextunidade;
     // End of variables declaration//GEN-END:variables
 }

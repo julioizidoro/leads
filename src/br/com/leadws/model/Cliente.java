@@ -44,6 +44,9 @@ public class Cliente implements Serializable{
     @Column(name = "dataCadastro")
     @Temporal(TemporalType.DATE)
     private Date dataCadastro;
+    @Column(name = "dataNascimento")
+    @Temporal(TemporalType.DATE)
+    private Date dataNascimento;
     @Column(name = "publicidade_idpublicidade")
     private int publicidade;
     @Column(name = "unidadeNegocio_idunidadeNegocio")
@@ -116,6 +119,14 @@ public class Cliente implements Serializable{
 
     public void setUnidadenegocio(int unidadenegocio) {
         this.unidadenegocio = unidadenegocio;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
         

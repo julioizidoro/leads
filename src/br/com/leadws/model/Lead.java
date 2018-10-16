@@ -80,6 +80,8 @@ public class Lead implements Serializable {
     private String Urlclient;
     @Column(name = "nomeunidade")
     private String nomeunidade;
+    @Column(name = "captacao")
+    private String captacao;
     
 
     public Lead() {
@@ -268,6 +270,14 @@ public class Lead implements Serializable {
 
     public void setNomeunidade(String nomeunidade) {
         this.nomeunidade = nomeunidade;
+    }
+
+    public String getCaptacao() {
+        return captacao;
+    }
+
+    public void setCaptacao(String captacao) {
+        this.captacao = captacao;
     }
 
     @Override
