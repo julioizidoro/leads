@@ -174,11 +174,10 @@ public class GerarLeadController {
         Lead lead = new Lead();
         LeadFacade leadFacede = new LeadFacade();
         boolean lancarHistorico = false;
-        if (emailAnterior.equalsIgnoreCase(contato.getEmail())){
-            jaecliente = false;
-            lead = new Lead();
-            lancarHistorico = false;
-        }
+//        if (!emailAnterior.equalsIgnoreCase(contato.getEmail())){
+//            lead = new Lead();
+//            lancarHistorico = false;
+//        }
         if (jaecliente){
             lead = leadFacede.getLead(cliente.getIdcliente());
             lancarHistorico = true;
@@ -238,7 +237,7 @@ public class GerarLeadController {
         Leadhistorico historico = new Leadhistorico();
         historico.setCliente(lead.getCliente());
         historico.setDatahistorico(new Date());
-        historico.setHistorico("Nova solictação do cliente via fale coosco para unidade " + contato.getUnidade_desc());
+        historico.setHistorico("Nova solictação do cliente via fale conosco para unidade " + contato.getUnidade_desc());
         historico.setTipocontato(1);
         HistoricoFacade historicoFacade = new HistoricoFacade();
         historicoFacade.salvar(historico);
